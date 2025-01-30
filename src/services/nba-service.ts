@@ -1,6 +1,8 @@
-import axios from 'axios';
+import AxiosClient from '@configs/axios/axios.config';
 
 const BASE_URL = 'https://www.balldontlie.io/api/v1';
+
+const axios = AxiosClient.getInstance();
 
 export const getPlayers = async () => {
   const response = await axios.get(`${BASE_URL}/players`);
