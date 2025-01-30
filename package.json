@@ -1,0 +1,42 @@
+{
+  "name": "pinguim-stats",
+  "version": "1.0.0",
+  "main": "src/main.ts",
+  "license": "MIT",
+
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "ts-node-dev --respawn --transpile-only --quiet -r tsconfig-paths/register src/main.ts",
+    "start:prod": "NODE_ENV=production node dist/main.js",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+    "setup:dev": "cross-env NODE_ENV=development ts-node setup.ts",
+    "db:start": "docker-compose -f docker-compose.development.yml up -d",
+    "db:stop": "docker-compose -f docker-compose.development.yml down",
+    "format:prisma": "npx prisma format"
+  },
+  "dependencies": {
+    "@balldontlie/sdk": "^1.2.2",
+    "@types/cors": "^2.8.17",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ts-node": "^10.9.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3"
+  }
+}
