@@ -13,10 +13,10 @@ nbaRoutes.get('/players', async (req, res) => {
   try {
     const players = await axios.get(`/players`, {params: {"team_ids[]": team_ids }});
     res.json({
-      data: players.data.data.filter((player: Player) => 
-        player.position && player.position.trim() !== ''
-      ),
-      meta: players.data.meta
+      data: players.data.data//.filter((player: Player) => 
+       // player.position && player.position.trim() !== ''
+      //),
+     // meta: players.data.meta
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch players' });
@@ -26,6 +26,15 @@ nbaRoutes.get('/players', async (req, res) => {
 nbaRoutes.get('/teams', async (req, res) => {
   try {
     const teams = await axios.get(`/teams`);
+    res.json(teams.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch teams' });
+  }
+});
+
+nbaRoutes.get('/allPlayers', async (req, res) => {
+  try {
+    const teams = await axios.get(`/players`);
     res.json(teams.data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch teams' });
