@@ -8,10 +8,12 @@ export class AxiosClient {
   public static getInstance(): AxiosInstance {
     if (!AxiosClient.instance) {
       AxiosClient.instance = axios.create({
-        baseURL: "https://api.balldontlie.io/v1",
+        baseURL: "https://stats.nba.com/stats",
         headers: {
-          Authorization: "f725831e-8411-452d-8213-b65bf2ec4080",
-          "Content-Type": "application/json",
+          "Accept": "application/json, text/plain, */*",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+          "Referer": "https://www.nba.com/",
+          "Origin": "https://www.nba.com/",
         },
       });
     }

@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import nbaRoutes from '@routes/nba-routes';
 import { PORT } from '@configs';
+import routes from '@routes';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/nba', nbaRoutes);
+app.use(routes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
