@@ -6,21 +6,6 @@ const axios = AxiosClient.getInstance();
 
 const nbaRoutes = Router();
 
-nbaRoutes.get('/players', async (req, res) => {
-  const { team_ids, player_ids } = req.query;
-  try {
-    const players = await axios.get(`/players`, {params: {"team_ids[]": team_ids, "player_ids[]": player_ids }});
-    res.json({
-      data: players.data.data.filter((player: Player) => 
-        player.position && player.position.trim() !== ''
-      ),
-      meta: players.data.meta
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch players' });
-  }
-});
-
 nbaRoutes.get('/classification', async (req, res) => {
   const { conference, season } = req.query; // lê os params query
 
@@ -57,9 +42,20 @@ nbaRoutes.get('/teams', async (req, res) => {
 });
 
 nbaRoutes.get('/playerByTeam', async (req, res) => {
-  const { teamId } = req.query;
+  const { teamId, season } = req.query;
   try {
-    const { data } = await axios.get(`https://stats.nba.com/stats/playerindex?Active=&AllStar=&College=&Country=&DraftPick=&DraftRound=&DraftYear=&Height=&Historical=&LeagueID=00&Season=2022-23&TeamID=${teamId}&Weight=`);
+    const { data } = await axios.get(`https://stats.nba.com/stats/commonteamroster?LeagueID=&Season=${season ||"2024-25"}&TeamID=${teamId}`);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch teams' });
+  }
+});
+
+
+nbaRoutes.get('/playerById', async (req, res) => {
+  const { playerId } = req.query;
+  try {
+    const { data } = await axios.get(`https://stats.nba.com/stats/commonplayerinfo?LeagueID=&PlayerID=${playerId}`);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch teams' });
@@ -67,9 +63,21 @@ nbaRoutes.get('/playerByTeam', async (req, res) => {
 });
 
 nbaRoutes.get('/teamsById', async (req, res) => {
-  const { teamId } = req.query;
+  const { teamId } = req.query; 
   try {
     const { data } = await axios.get(`https://stats.nba.com/stats/teaminfocommon?LeagueID=00&Season=&SeasonType=&TeamID=${teamId}`);
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching teams:', error);
+    res.status(500).json({ error: 'Failed to fetch teams' });
+  }
+});
+
+
+nbaRoutes.get('/playerCareerStats', async (req, res) => {
+  const { playerId } = req.query; 
+  try {
+    const { data } = await axios.get(`https://stats.nba.com/stats/playercareerstats?LeagueID=&PerMode=Totals&PlayerID=${playerId}`);
     res.json(data);
   } catch (error) {
     console.error('Error fetching teams:', error);
