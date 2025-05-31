@@ -85,4 +85,16 @@ nbaRoutes.get('/playerCareerStats', async (req, res) => {
   }
 });
 
+nbaRoutes.get('/allPlayers', async (req, res) => {
+   const { season } = req.query; 
+  try {
+    const { data } = await axios.get(
+      `https://stats.nba.com/stats/commonallplayers?IsOnlyCurrentSeason=0&LeagueID=00&Season=${season||"2024-25"}`
+    );
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch player list' });
+  }
+});
+
 export default nbaRoutes;
