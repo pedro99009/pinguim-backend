@@ -97,4 +97,23 @@ nbaRoutes.get('/allPlayers', async (req, res) => {
   }
 });
 
+//Pega PerMode para saber as estatisticas
+nbaRoutes.get('/teamStats', async (req, res) => {
+  const { season, PerMode, MeasureType } = req.query;
+
+  // Constrói a URL com todos os parâmetros esperados pela API
+  const url = `https://stats.nba.com/stats/leaguedashteamstats?` +
+    `Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=` +
+    `&MeasureType=${MeasureType || "Base"}&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=${PerMode || "PerGame"}` +
+    `&Period=0&PlusMinus=N&Rank=N&Season=${season || "2024-25"}&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=` +
+    `&StarterBench=&TeamID=&TwoWay=0&VsConference=&VsDivision=`;
+
+  try {
+    const { data } = await axios.get(url);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao buscar estatísticas médias por jogo:', error);
+    res.status(500).json({ error: 'Falha ao buscar estatísticas médias por jogo' });
+  }
+});
 export default nbaRoutes;
